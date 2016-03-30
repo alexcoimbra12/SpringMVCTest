@@ -1,6 +1,5 @@
 package com.accenture.treinamento.spring.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +15,6 @@ import com.accenture.treinamento.spring.model.Usuario;
 
 @Controller
 public class CadastrarUsuarioController {
-
-	@RequestMapping("/olaMundoSpring")
-	public String execute() {
-		System.out.println("Executando a logica com Spring MVC");
-		return "ok";
-	}
 
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.POST)
 	public ModelAndView cadastraUsuario(HttpServletRequest req,
@@ -72,40 +65,16 @@ public class CadastrarUsuarioController {
 	public List<Usuario> buscarUsuario(HttpServletRequest req,
 			HttpServletResponse resp) {
 
-		List<Usuario> list = new ArrayList<Usuario>();
-
 		String usuario = req.getParameter("buscarNome");
 		UsuarioDao usuarioDao = new UsuarioDao();
 
 		List<Usuario> listUser = usuarioDao.findByName(usuario);
-		
-		if (listUser.isEmpty() || listUser.getClass() == null){
-			list.isEmpty();
-		} else {
-			
-			for (Usuario listUser1 : listUser) {
-				for (int i = 0; i<listUser.size(); i++) {
-			
-					Usuario usuario1 = new Usuario();
-					
-					usuario1.setNome(listUser.get(i).getNome());
-					usuario1.setEmail(listUser.get(i).getEmail());
-					usuario1.setIdade(listUser.get(i).getIdade());
-					usuario1.setEstado(listUser.get(i).getEstado());
-					usuario1.setUserName(listUser.get(i).getUserName());
-					usuario1.setId(listUser.get(i).getId());
-					
-					list.add(usuario1);
-				
-					System.out.println(listUser.get(0).getNome());
-				}
-				return list;
-			}
+
+		return listUser;
 		}	
-			return list;
-	}
+
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = { "/ListUser" }, method = RequestMethod.POST)
 	public List<Usuario> deletarUsuario (HttpServletRequest req,
 			HttpServletResponse resp) {
 			
@@ -118,16 +87,51 @@ public class CadastrarUsuarioController {
 		
 		return buscarUsuario(req, resp);
 	}
-	
+	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView validarUsuario (HttpServletRequest req,
 			HttpServletResponse resp) {
 		
-		String userName = req.getParameter("userName");
+		String userName = req.getParameter("user");
 		UsuarioDao usuarioDao = new UsuarioDao();
 		
 		ModelAndView mv = new ModelAndView();
 		
 		return mv.addObject("validaUser", usuarioDao.validarUserName(userName));
+	}
+	
+	@RequestMapping(value = { "/EditUser" }, method = RequestMethod.GET)
+	public List<Usuario> findUsersToEdit(HttpServletRequest req,
+			HttpServletResponse resp) {
+	
+		UsuarioDao usuarioDao = new UsuarioDao();
+
+		List<Usuario> listUser = usuarioDao.findAll();
+
+		return listUser;
+		}	
+
+	
+	@RequestMapping(value = { "/EditUser" }, method = RequestMethod.POST)
+	public List<Usuario> atualizarUsuario (HttpServletRequest req,
+			HttpServletResponse resp) {
+		
+		Integer id = Integer.valueOf(req.getParameter("alterar"));
+		
+		Usuario usuario = new Usuario();
+		
+		UsuarioDao usuarioDao = new UsuarioDao();
+		usuario = usuarioDao.getById(id);
+	
+		usuario.setNome(req.getParameter("nome"));
+		usuario.setEmail(req.getParameter("email"));
+		usuario.setIdade(req.getParameter("idade"));
+		usuario.setUserName(req.getParameter("user"));
+		usuario.setPassword(usuario.getPassword());
+		usuario.setEstado(req.getParameter("estado"));
+		
+		usuarioDao.merge(usuario);
+		
+		return findUsersToEdit(req, resp);
 	}
 }
 	

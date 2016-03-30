@@ -21,6 +21,17 @@
 	<h3>Dados do Usuário</h3>
 	<div class="jumbotron">
       <div class="container">
+			
+			<form method="POST">
+			Usuário: <br>
+			<input type="text" name="user" id="user"> &nbsp 
+					<button type="submit" id="verificaUser" name="verificaUser" formaction="${validarUsuario}">Verificar Usuário</button> <br>
+					<c:choose>
+						<c:when test="${validaUser == 'false' }">
+							<label hidden="true" id="valida">${validaUser}</label>
+						</c:when>
+					</c:choose>
+			</form>
 			<form method="POST" id="form" action="${cadastraUsuario}" onsubmit="return verificaForm(this)">
 				<div id="div1">
 					Nome: <br> 
@@ -29,15 +40,6 @@
 					<input type="text" name="email" id="email"> <br> 
 					Idade: <br>
 					<input type="text" name="idade" id="idade"> <br>
-					Usuário: <br>
-					<input type="text" name="user" id="user"> &nbsp 
-					<button type="submit" id="verificaUser" name="verificaUser" formaction="${validarUsuario}">Verificar Usuário</button> <br>
-					<c:choose>
-						<c:when test="${validaUser == 'false' }">
-							<label hidden="true" id="valida">${validaUser}</label>
-						</c:when>
-					</c:choose>
-					
 					Senha: <br>
 					<input type="password" name="password" id="password"> <br>
 					Confirmar Senha: <br>

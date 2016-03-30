@@ -32,7 +32,7 @@
       		</c:when>
       	<c:otherwise>
       		<form method="POST">
-      			<table border="2" style="width: 35%">
+      			<table border="2" style="width: 50%">
       				<tr><td>Nome </td>
       				<td> E-mail </td>
       				<td> Idade </td>
