@@ -22,18 +22,11 @@
 	<div class="jumbotron">
       <div class="container">
 			
-			<form method="POST">
-			Usuário: <br>
-			<input type="text" name="user" id="user"> &nbsp 
-					<button type="submit" id="verificaUser" name="verificaUser" formaction="${validarUsuario}">Verificar Usuário</button> <br>
-					<c:choose>
-						<c:when test="${validaUser == 'false' }">
-							<label hidden="true" id="valida">${validaUser}</label>
-						</c:when>
-					</c:choose>
-			</form>
-			<form method="POST" id="form" action="${cadastraUsuario}" onsubmit="return verificaForm(this)">
+			<form method="POST" id="form" onsubmit="return verificaForm(this)">
 				<div id="div1">
+					Usuário: <br>
+					<input type="text" name="user" id="user"> &nbsp 
+					<button type="submit" id="verificaUser" name="verificaUser" formaction="/SpringMVC/ConsultUser">Verificar Usuário</button> <br>
 					Nome: <br> 
 					<input type="text" name="nome" id="nome"> <br>
 					E-mail: <br> 
@@ -77,7 +70,7 @@
 						<option value="to">Tocantins</option> 
 					 </select>
 					 <br> <br>
-					 <input type="checkbox" id="confCadastro" name="confCadastro"> Aceito os termos de Cadastro.
+					 <input type="checkbox" id="confCadastro" name="confCadastro" formaction="${cadastraUsuario}"> Aceito os termos de Cadastro.
 					 <br>
 				</div>
 			

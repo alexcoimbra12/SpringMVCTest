@@ -87,16 +87,16 @@ public class CadastrarUsuarioController {
 		
 		return buscarUsuario(req, resp);
 	}
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView validarUsuario (HttpServletRequest req,
+	@RequestMapping(value = {"/ConsultUser"}, method = RequestMethod.POST)
+	public boolean validarUsuario (HttpServletRequest req,
 			HttpServletResponse resp) {
 		
 		String userName = req.getParameter("user");
 		UsuarioDao usuarioDao = new UsuarioDao();
 		
-		ModelAndView mv = new ModelAndView();
+		//ModelAndView mv = new ModelAndView();
 		
-		return mv.addObject("validaUser", usuarioDao.validarUserName(userName));
+		return usuarioDao.validarUserName(userName);
 	}
 	
 	@RequestMapping(value = { "/EditUser" }, method = RequestMethod.GET)
