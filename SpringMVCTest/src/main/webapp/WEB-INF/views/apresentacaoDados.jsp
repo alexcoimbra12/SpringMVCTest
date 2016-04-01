@@ -30,7 +30,7 @@
         <p>Nome: ${param.nome}</p> <br>
 		<p>E-mail: ${param.email}</p> <br>
 		<p>Idade: ${param.idade}</p> <br>
-		<p>Estado: ${param.estado}
+		<p>Estado: ${param.estado}</p>
       </div>
     </div>
 </body>

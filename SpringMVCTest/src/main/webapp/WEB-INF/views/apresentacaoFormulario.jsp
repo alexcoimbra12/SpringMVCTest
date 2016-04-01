@@ -9,6 +9,20 @@
 
 <link rel='stylesheet' href='webjars/bootstrap/3.3.6/css/bootstrap.min.css'>
 <script type="text/javascript" src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+	window.onload = function(){
+	
+	var msg = "${requestScope.msg}";
+	
+	if (msg == 'Ok') {
+		formEnable();
+	} else {
+		formDisable();
+	}
+
+}
+</script>
 </head>
 <body>
 
@@ -22,11 +36,25 @@
 	<div class="jumbotron">
       <div class="container">
 			
+			<form id="form1">
+					Usuário: <br>
+					<c:choose>
+						<c:when test="${requestScope.msg == 'Ok'}">
+							<input type="text" name="user" id="user" value="${requestScope.user}" onchange="trocaUser()"> &nbsp
+							<button type="submit" id="verificaUser" style="display: none" name="verificaUser" formaction="${validarUsuario}" formmethod="post">Verificar Usuário</button><br>
+							<span id="userDisp" style="display: inline; color: blue">Usuário Dísponivel</span>
+						</c:when>
+						<c:otherwise>
+							<input type="text" name="user" id="user"> &nbsp 
+							<button type="submit" id="verificaUser" name="verificaUser" formaction="${validarUsuario}" formmethod="post">Verificar Usuário</button><br>
+							<span style="color: red">${requestScope.msg}</span>
+						</c:otherwise>
+					</c:choose>
+			</form>
+			
 			<form method="POST" id="form" onsubmit="return verificaForm(this)">
 				<div id="div1">
-					Usuário: <br>
-					<input type="text" name="user" id="user"> &nbsp 
-					<button type="submit" id="verificaUser" name="verificaUser" formaction="/SpringMVC/ConsultUser">Verificar Usuário</button> <br>
+					
 					Nome: <br> 
 					<input type="text" name="nome" id="nome"> <br>
 					E-mail: <br> 
@@ -70,11 +98,11 @@
 						<option value="to">Tocantins</option> 
 					 </select>
 					 <br> <br>
-					 <input type="checkbox" id="confCadastro" name="confCadastro" formaction="${cadastraUsuario}"> Aceito os termos de Cadastro.
+					 <input type="checkbox" id="confCadastro" name="confCadastro"> Aceito os termos de Cadastro.
 					 <br>
 				</div>
 			
-				<input class="btn btn-primary btn-lg" type="submit" value="Cadastrar">
+				<button class="btn btn-primary btn-lg" type="submit" formaction="${cadastraUsuario}">Cadastrar</button>
 				</form>
 	</div>			
 		</div>
@@ -136,6 +164,28 @@
     			else {
     				return true;
     			}
+    		}
+			
+    		function formDisable () {
+    			var form = document.getElementById("form");
+    			for(i = 0;i<form.length;i++){
+    			    form[i].disabled=true;
+    			 }
+
+    		}
+    		
+    		function formEnable () {
+    			var form = document.getElementById("form");
+    			for(i = 0;i<form.length;i++){
+    			    form[i].disabled=false;
+    			 }
+
+    		}
+    		
+    		function trocaUser () {
+     			document.getElementById("verificaUser").style.display = 'inline';
+     			document.getElementById("userDisp").style.display = 'none';
+     			formDisable();
     		}
 
     	</script>

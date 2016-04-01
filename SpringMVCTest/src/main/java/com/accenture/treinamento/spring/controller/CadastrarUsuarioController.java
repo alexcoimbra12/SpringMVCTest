@@ -15,8 +15,10 @@ import com.accenture.treinamento.spring.model.Usuario;
 
 @Controller
 public class CadastrarUsuarioController {
+	
+	private String MSG_USER_NOT_VALID = "Usuário não está disponível, por favor tente outro";
 
-	@RequestMapping(value = { "", "/" }, method = RequestMethod.POST)
+//	@RequestMapping(value = { "", "/" }, method = RequestMethod.POST)
 	public ModelAndView cadastraUsuario(HttpServletRequest req,
 			HttpServletResponse resp) {
 
@@ -26,7 +28,7 @@ public class CadastrarUsuarioController {
 			usuario.setNome(req.getParameter("nome"));
 			usuario.setEmail(req.getParameter("email"));
 			usuario.setIdade(req.getParameter("idade"));
-			usuario.setUserName(req.getParameter("user"));
+			usuario.setUser(req.getParameter("user"));
 			usuario.setPassword(req.getParameter("password"));
 			usuario.setEstado(req.getParameter("estado"));
 
@@ -41,13 +43,6 @@ public class CadastrarUsuarioController {
 
 		mv = new ModelAndView("apresentacaoDados");
 
-		mv.addObject("nome", req.getAttribute("nome"));
-		mv.addObject("email", req.getAttribute("email"));
-		mv.addObject("idade", req.getAttribute("idade"));
-		mv.addObject("estado", req.getAttribute("estado"));
-
-		System.out.println(req.getParameter("nome"));
-
 		return mv;
 
 	}
@@ -57,6 +52,7 @@ public class CadastrarUsuarioController {
 			HttpServletResponse resp) {
 
 		ModelAndView mv = new ModelAndView("apresentacaoFormulario");
+		req.setAttribute("msg", "");
 		return mv;
 
 	}
@@ -71,68 +67,77 @@ public class CadastrarUsuarioController {
 		List<Usuario> listUser = usuarioDao.findByName(usuario);
 
 		return listUser;
-		}	
+	}
 
-	
 	@RequestMapping(value = { "/ListUser" }, method = RequestMethod.POST)
-	public List<Usuario> deletarUsuario (HttpServletRequest req,
+	public List<Usuario> deletarUsuario(HttpServletRequest req,
 			HttpServletResponse resp) {
-			
+
 		System.out.println(req.getParameter("deletar"));
 		Integer id = Integer.valueOf(req.getParameter("deletar"));
-		
+
 		UsuarioDao usuarioDao = new UsuarioDao();
-		
+
 		usuarioDao.removeById(id);
-		
+
 		return buscarUsuario(req, resp);
 	}
-	@RequestMapping(value = {"/ConsultUser"}, method = RequestMethod.POST)
-	public boolean validarUsuario (HttpServletRequest req,
+
+	 @RequestMapping(value = { "", "/" }, method = RequestMethod.POST)
+	public ModelAndView validarUsuario(HttpServletRequest req,
 			HttpServletResponse resp) {
-		
+
+		boolean userOk;
+		ModelAndView mv = new ModelAndView("apresentacaoFormulario");
 		String userName = req.getParameter("user");
 		UsuarioDao usuarioDao = new UsuarioDao();
-		
-		//ModelAndView mv = new ModelAndView();
-		
-		return usuarioDao.validarUserName(userName);
+
+		userOk = usuarioDao.validarUserName(userName);
+
+		if (userOk == true) {
+			
+			String ok = "Ok";
+			req.setAttribute("msg", ok);
+			req.setAttribute("user", userName);
+			
+		} else {
+			req.setAttribute("msg", MSG_USER_NOT_VALID);
+			
+		}
+		return mv;
 	}
-	
+
 	@RequestMapping(value = { "/EditUser" }, method = RequestMethod.GET)
 	public List<Usuario> findUsersToEdit(HttpServletRequest req,
 			HttpServletResponse resp) {
-	
+
 		UsuarioDao usuarioDao = new UsuarioDao();
 
 		List<Usuario> listUser = usuarioDao.findAll();
 
 		return listUser;
-		}	
+	}
 
-	
 	@RequestMapping(value = { "/EditUser" }, method = RequestMethod.POST)
-	public List<Usuario> atualizarUsuario (HttpServletRequest req,
+	public List<Usuario> atualizarUsuario(HttpServletRequest req,
 			HttpServletResponse resp) {
-		
+
 		Integer id = Integer.valueOf(req.getParameter("alterar"));
-		
+
 		Usuario usuario = new Usuario();
-		
+
 		UsuarioDao usuarioDao = new UsuarioDao();
 		usuario = usuarioDao.getById(id);
-	
+
 		usuario.setNome(req.getParameter("nome"));
 		usuario.setEmail(req.getParameter("email"));
 		usuario.setIdade(req.getParameter("idade"));
-		usuario.setUserName(req.getParameter("user"));
+		usuario.setUser(req.getParameter("user"));
 		usuario.setPassword(usuario.getPassword());
 		usuario.setEstado(req.getParameter("estado"));
-		
+
 		usuarioDao.merge(usuario);
-		
+
 		return findUsersToEdit(req, resp);
 	}
 }
-	
-

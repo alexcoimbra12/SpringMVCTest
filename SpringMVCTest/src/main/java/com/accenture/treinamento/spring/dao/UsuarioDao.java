@@ -55,9 +55,20 @@ public class UsuarioDao {
 	
 
 	}
+	@SuppressWarnings({ "unchecked" })
 	public boolean validarUserName(String userName) {
 		
-		if(entityManager.createQuery("SELECT c FROM Usuario c WHERE c.user LIKE :user").setParameter("user", "%"+userName+"%").getResultList().isEmpty()) {
+		List<Usuario> usuario = new ArrayList<Usuario>();
+		try {
+			System.out.println(userName);
+			usuario = entityManager.createQuery("SELECT c.user from Usuario c WHERE c.user = :user").setParameter("user", userName).getResultList();
+		} catch (Exception e) {
+			System.out.println("Entrou no Catch");
+			e.printStackTrace();
+			return false;
+		}
+				
+		if(usuario.isEmpty()) {
 			return true;
 		} else {
 			return false;
