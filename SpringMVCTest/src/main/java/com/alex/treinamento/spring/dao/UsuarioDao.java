@@ -1,4 +1,4 @@
-package com.accenture.treinamento.spring.dao;
+package com.alex.treinamento.spring.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import com.accenture.treinamento.spring.model.Usuario;
+import com.alex.treinamento.spring.model.Usuario;
 
 
 public class UsuarioDao {

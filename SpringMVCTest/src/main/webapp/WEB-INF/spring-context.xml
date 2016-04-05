@@ -10,7 +10,8 @@
     http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 	
 	<mvc:resources mapping="/resources/**" location="/resources/" />
-	<context:component-scan base-package="com.accenture.treinamento.spring" />
+	<mvc:resources location="/webjars/" mapping="**"/>
+	<context:component-scan base-package="com.alex.treinamento.spring" />
 	<mvc:annotation-driven />
 
 	<bean

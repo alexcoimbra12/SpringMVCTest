@@ -1,14 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>	
 <!DOCTYPE HTML>
 <html lang="pt-br">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Cadastro Usuario</title>
 
 <link rel='stylesheet' href='webjars/bootstrap/3.3.6/css/bootstrap.min.css'>
 <script type="text/javascript" src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="webjars/jquery/1.11.1/jquery.min.js"></script>
 
 <script type="text/javascript">
 	window.onload = function(){
@@ -32,28 +33,33 @@
    <jsp:include page="barra_busca.jspf"/>
    
 	<h2>Por favor, insira os seus dados abaixo</h2>
-	<h3>Dados do Usuário</h3>
+	<h3>Dados do UsuÃ¡rio</h3>
 	<div class="jumbotron">
       <div class="container">
 			
-			<form id="form1">
-					Usuário: <br>
+			<form method="POST" id="form"  onsubmit="return verificaForm(this)">
+				<div id="div">
+					UsuÃ¡rio: <br>
 					<c:choose>
 						<c:when test="${requestScope.msg == 'Ok'}">
 							<input type="text" name="user" id="user" value="${requestScope.user}" onchange="trocaUser()"> &nbsp
-							<button type="submit" id="verificaUser" style="display: none" name="verificaUser" formaction="${validarUsuario}" formmethod="post">Verificar Usuário</button><br>
-							<span id="userDisp" style="display: inline; color: blue">Usuário Dísponivel</span>
+							<button type="submit" id="verificaUser" style="display: none" name="verificaUser"  formmethod="post" onclick="return verificaCampoUser(this)">
+								Verificar UsuÃ¡rio
+							</button><br>
+							<span id="userDisp" style="display: inline; color: blue">UsuÃ¡rio DÃ­sponivel</span>
 						</c:when>
 						<c:otherwise>
 							<input type="text" name="user" id="user"> &nbsp 
-							<button type="submit" id="verificaUser" name="verificaUser" formaction="${validarUsuario}" formmethod="post">Verificar Usuário</button><br>
+							<button type="submit" id="verificaUser" name="verificaUser" formmethod="post" onclick="return verificaCampoUser(this)">
+								Verificar UsuÃ¡rio
+							</button><br>
 							<span style="color: red">${requestScope.msg}</span>
 						</c:otherwise>
 					</c:choose>
-			</form>
-			
-			<form method="POST" id="form" onsubmit="return verificaForm(this)">
-				<div id="div1">
+<!-- 			</form> -->
+				</div>
+<!-- 			<form method="POST" id="form" onsubmit="return verificaForm(this)"> -->
+				<div id="div1" style="display: none">
 					
 					Nome: <br> 
 					<input type="text" name="nome" id="nome"> <br>
@@ -72,37 +78,38 @@
 						<option value="ac">Acre</option> 
 						<option value="al">Alagoas</option> 
 						<option value="am">Amazonas</option> 
-						<option value="ap">Amapá</option> 
+						<option value="ap">AmapÃ¡</option> 
 						<option value="ba">Bahia</option> 
-						<option value="ce">Ceará</option> 
+						<option value="ce">CearÃ¡</option> 
 						<option value="df">Distrito Federal</option> 
-						<option value="es">Espírito Santo</option> 
-						<option value="go">Goiás</option> 
-						<option value="ma">Maranhão</option> 
+						<option value="es">EspÃ­rito Santo</option> 
+						<option value="go">GoiÃ¡s</option> 
+						<option value="ma">MaranhÃ£o</option> 
 						<option value="mt">Mato Grosso</option> 
 						<option value="ms">Mato Grosso do Sul</option> 
 						<option value="mg">Minas Gerais</option> 
-						<option value="pa">Pará</option> 
-						<option value="pb">Paraíba</option> 
-						<option value="pr">Paraná</option> 
+						<option value="pa">ParÃ¡</option> 
+						<option value="pb">ParaÃ­ba</option> 
+						<option value="pr">ParanÃ¡</option> 
 						<option value="pe">Pernambuco</option> 
-						<option value="pi">Piauí</option> 
+						<option value="pi">PiauÃ­</option> 
 						<option value="rj">Rio de Janeiro</option> 
 						<option value="rn">Rio Grande do Norte</option> 
-						<option value="ro">Rondônia</option> 
+						<option value="ro">RondÃ´nia</option> 
 						<option value="rs">Rio Grande do Sul</option> 
 						<option value="rr">Roraima</option> 
 						<option value="sc">Santa Catarina</option> 
 						<option value="se">Sergipe</option> 
-						<option value="sp">São Paulo</option> 
+						<option value="sp">SÃ£o Paulo</option> 
 						<option value="to">Tocantins</option> 
 					 </select>
 					 <br> <br>
 					 <input type="checkbox" id="confCadastro" name="confCadastro"> Aceito os termos de Cadastro.
 					 <br>
-				</div>
+				
 			
 				<button class="btn btn-primary btn-lg" type="submit" formaction="${cadastraUsuario}">Cadastrar</button>
+				</div>
 				</form>
 	</div>			
 		</div>
@@ -110,28 +117,29 @@
     	<script type="text/javascript">
 
     		function verificaForm (form) {
+    			var disp = document.getElementById("userDisp");
+    			if (form.user.value != "" && document.getElementById("userDisp").style.display == "none") {
+    				return true;
+    			} else {
+    			
+    			
     			if (form.nome.value == "") {
-    				alert("É obrigatório inserir um nome");
+    				alert("Ã‰ obrigatÃ³rio inserir um nome");
     				document.getElementById("nome").focus();
     				return false; 
     				
     			}if (form.email.value == "") {
-    				alert("É obrigatório inseir um email");
+    				alert("Ã‰ obrigatÃ³rio inseir um email");
     				document.getElementById("email").focus();
     				return false;
     			
     			}if (form.idade.value == "") {
-    				alert("É obrigatório inserir a idade");
+    				alert("Ã‰ obrigatÃ³rio inserir a idade");
     				document.getElementById("idade").focus();
     				return false;
     				
-    			}if (form.user.value == "") {
-    				alert("É obrigatório inserir um usuário");
-    				document.getElementById("user").focus();
-    				return false;
-    				
     			}if (form.password.value == "") {
-    				alert("É obrigatório inserir uma senha");
+    				alert("Ã‰ obrigatÃ³rio inserir uma senha");
     				document.getElementById("password").focus();
     				return false;	
     				
@@ -139,25 +147,25 @@
     				return false;
     			 
     			}if (form.estado.selectedIndex == "") {
-    				alert("É obrigatório selecionar um estado");
+    				alert("Ã‰ obrigatÃ³rio selecionar um estado");
     				document.getElementById("estado").focus();
     				return false;
     				
     			
     			}if (form.confCadastro.checked == false) {
-    				alert("É obrigatório aceitar os termos antes de continuar");
+    				alert("Ã‰ obrigatÃ³rio aceitar os termos antes de continuar");
     				document.getElementById("confCadastro").focus();
     				return false;
     			
     			}
     			
     		return true
-    			
+    			}		
     		}
     		
-    		function verificaSenha () {
+    		function verificaSenha() {
     			if (document.getElementById("password").value != document.getElementById("password1").value) {
-    				alert("Senhas não são iguais");
+    				alert("Senhas nÃ£o sÃ£o iguais");
     				document.getElementById("password1").focus();
     				return false;
     			}
@@ -166,26 +174,38 @@
     			}
     		}
 			
-    		function formDisable () {
-    			var form = document.getElementById("form");
-    			for(i = 0;i<form.length;i++){
-    			    form[i].disabled=true;
-    			 }
+    		function formDisable() {
+    			document.getElementById("div1").style.display = 'none';
+//     			var form = document.getElementById("form");
+//     			for(i = 0;i<form.length;i++){
+//     			    form[i].disabled=true;
+//     			 }
 
     		}
     		
-    		function formEnable () {
-    			var form = document.getElementById("form");
-    			for(i = 0;i<form.length;i++){
-    			    form[i].disabled=false;
-    			 }
+    		function formEnable() {
+    			document.getElementById("div1").style.display = 'inline';
+//     			var form = document.getElementById("form");
+//     			for(i = 0;i<form.length;i++){
+//     			    form[i].disabled=false;
+//     			 }
 
     		}
     		
-    		function trocaUser () {
+    		function trocaUser() {
      			document.getElementById("verificaUser").style.display = 'inline';
      			document.getElementById("userDisp").style.display = 'none';
      			formDisable();
+    		}
+    		
+    		function verificaCampoUser(button){
+    			
+    			if (document.getElementById("user").value == ""){
+    				alert("Ã‰ obrigatÃ³rio inserir um usuÃ¡rio")
+    				document.getElementById("user").focus();
+    				formDisable();
+    				return false;
+    			}
     		}
 
     	</script>

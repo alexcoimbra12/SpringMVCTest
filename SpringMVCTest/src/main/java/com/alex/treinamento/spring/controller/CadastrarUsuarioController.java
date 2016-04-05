@@ -1,4 +1,4 @@
-package com.accenture.treinamento.spring.controller;
+package com.alex.treinamento.spring.controller;
 
 import java.util.List;
 
@@ -10,18 +10,41 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.accenture.treinamento.spring.dao.UsuarioDao;
-import com.accenture.treinamento.spring.model.Usuario;
+import com.alex.treinamento.spring.dao.UsuarioDao;
+import com.alex.treinamento.spring.model.Usuario;
 
 @Controller
 public class CadastrarUsuarioController {
 	
-	private String MSG_USER_NOT_VALID = "Usu·rio n„o est· disponÌvel, por favor tente outro";
+	private String MSG_USER_NOT_VALID = "Usu√°rio n√£o est√° dispon√≠vel, por favor tente outro";
 
-//	@RequestMapping(value = { "", "/" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "", "/" }, method = RequestMethod.POST)
 	public ModelAndView cadastraUsuario(HttpServletRequest req,
 			HttpServletResponse resp) {
+				
+		ModelAndView mv;	
+		String nome = req.getParameter("nome");
+		if (nome == null || nome.equals("")) {
+			
+			boolean userOk;
+			mv = new ModelAndView("apresentacaoFormulario");
+			String userName = req.getParameter("user");
+			UsuarioDao usuarioDao = new UsuarioDao();
 
+			userOk = usuarioDao.validarUserName(userName);
+
+			if (userOk == true) {
+				
+				String ok = "Ok";
+				req.setAttribute("msg", ok);
+				req.setAttribute("user", userName);
+				
+			} else {
+				req.setAttribute("msg", MSG_USER_NOT_VALID);
+				
+			}
+			
+		} else {
 		try {
 			Usuario usuario = new Usuario();
 
@@ -39,10 +62,9 @@ public class CadastrarUsuarioController {
 			e.printStackTrace();
 			System.out.println("Erro ao salvar no banco" + e);
 		}
-		ModelAndView mv;
-
 		mv = new ModelAndView("apresentacaoDados");
-
+		}
+		
 		return mv;
 
 	}
@@ -81,30 +103,6 @@ public class CadastrarUsuarioController {
 		usuarioDao.removeById(id);
 
 		return buscarUsuario(req, resp);
-	}
-
-	 @RequestMapping(value = { "", "/" }, method = RequestMethod.POST)
-	public ModelAndView validarUsuario(HttpServletRequest req,
-			HttpServletResponse resp) {
-
-		boolean userOk;
-		ModelAndView mv = new ModelAndView("apresentacaoFormulario");
-		String userName = req.getParameter("user");
-		UsuarioDao usuarioDao = new UsuarioDao();
-
-		userOk = usuarioDao.validarUserName(userName);
-
-		if (userOk == true) {
-			
-			String ok = "Ok";
-			req.setAttribute("msg", ok);
-			req.setAttribute("user", userName);
-			
-		} else {
-			req.setAttribute("msg", MSG_USER_NOT_VALID);
-			
-		}
-		return mv;
 	}
 
 	@RequestMapping(value = { "/EditUser" }, method = RequestMethod.GET)

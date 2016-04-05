@@ -1,4 +1,4 @@
-package com.accenture.treinamento.spring.model;
+package com.alex.treinamento.spring.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
