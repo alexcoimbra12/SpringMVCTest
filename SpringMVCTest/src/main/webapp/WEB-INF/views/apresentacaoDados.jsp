@@ -16,6 +16,7 @@
 <link rel='stylesheet' href='webjars/bootstrap/3.3.6/css/bootstrap.min.css'>
 
 
+<script type="text/javascript" src="webjars/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
@@ -25,12 +26,22 @@
  
    <div class="jumbotron">
       <div class="container">
-        <h1>Usuário Cadastrado com Sucesso!</h1>
-        <p>Dados do Usuário</p>
-        <p>Nome: ${param.nome}</p> <br>
-		<p>E-mail: ${param.email}</p> <br>
-		<p>Idade: ${param.idade}</p> <br>
-		<p>Estado: ${param.estado}</p>
+      <h1>Usuário Cadastrado com Sucesso!</h1>
+      	<table class="table table-striped">
+      		<caption>Dados do Usuário</caption>
+	  		<tr>
+	  			<td><label>Nome</label></td>
+	  		    <td><label>E-mail</label></td>
+	  		    <td><label>Idade</label></td>
+	  		    <td><label>Estado</label></td>
+	        </tr>
+	        <tr>
+	        	<td>${param.nome}</td>
+				<td>${param.email}</td>
+				<td>${param.idade}</td>
+				<td>${param.estado}</td>
+			</tr> 
+      	</table>
       </div>
     </div>
 </body>

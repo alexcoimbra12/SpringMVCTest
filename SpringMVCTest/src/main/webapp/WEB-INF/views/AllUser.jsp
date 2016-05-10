@@ -30,7 +30,7 @@
       <div class="container">
       <c:choose>
       		<c:when test="${empty usuarioList}">
-	      		<p>Não Encontramos Resultado. Verifique se o nome foi digitado correto e tente novamente mais tarde.</p>
+	      		<p>Não existem usuários cadastrados.</p>
       		</c:when>
       	<c:otherwise>
       		<form method="POST">
@@ -62,7 +62,7 @@
 					<td>${usuario.idade}</td>
 					<td>${usuario.estado}</td>
 					<td>${usuario.user}</td>
-					<td><button class='btn btn-danger btn-xs' type="submit" data-toggle="confirmation" data-btn-ok-label="Continuar" data-btn-ok-class="btn-success" data-btn-cancel-label="Cancelar" data-btn-cancel-class="btn-danger" name="deletar" id="deletar" value="${usuario.id}">Deletar</button>
+					<td><button class='btn btn-danger btn-xs' type="submit" formaction="/SpringMVCTest/remove" data-toggle="confirmation" data-btn-ok-label="Continuar" data-btn-ok-class="btn-success" data-btn-cancel-label="Cancelar" data-btn-cancel-class="btn-danger" name="deletar" id="deletar" value="${usuario.id}">Deletar</button>
 					<button type="submit" class="btn btn-primary btn-xs" value="${usuario.id}" id="editar" name="editar" formaction="/SpringMVCTest/EditUser" formmethod="get">Editar</button></td><tr>
 		        </c:forEach>
       			</table>
@@ -71,11 +71,10 @@
       </c:choose>
       </div>
     </div>
-
 <script>
   $('[data-toggle=confirmation]').confirmation();
   $('[data-toggle=confirmation-singleton]').confirmation({ singleton:true });
   $('[data-toggle=confirmation-popout]').confirmation({ popout: true });
-</script>    
+</script> 
 </body>
 </html>

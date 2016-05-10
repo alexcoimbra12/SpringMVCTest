@@ -14,8 +14,6 @@
 <title>Cadastro de Usuario</title>
 
 <link rel='stylesheet' href='webjars/bootstrap/3.3.6/css/bootstrap.min.css'>
-
-
 <script type="text/javascript" src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 </head>
@@ -27,36 +25,47 @@
    <div class="jumbotron">
       <div class="container">
       <c:choose>
-      		<c:when test="${empty usuarioList}">
+      		<c:when test="${empty usuario}">
 	      		<p>Não Encontramos Resultados</p>
       		</c:when>
       	<c:otherwise>
-      		<table border="2" style="width: 50%">
+      		<form method="POST">
+      		<table class="table table-hover">
       		
-      				<tr><td>Nome </td>
-      				<td> E-mail </td>
-      				<td> Idade </td>
-      				<td> Estado </td>
-      				<td> Usuario </td>
-      				<td>Ação</td></tr>
-      			
-      				
-		      	<c:forEach items="${usuarioList}" var="usuario">
-		      	<form method="POST">
+      				<tr>
+      					<td>
+      						<label>Nome</label>
+      					</td>
+      					<td> 
+      						<label>E-mail</label>
+      					</td>
+      					<td> 
+      						<label>Idade</label>
+      					</td>
+      					<td> 
+      						<label>Estado</label>
+      					</td>
+      					<td>
+      						<label>Usuario</label>
+      					</td>
+      					<td>
+      						<label>Ação</label>
+      					</td>
+      				</tr>
+      			      				
+		      	
 		      		   	<tr><td><input type="text" value="${usuario.nome}" id="nome" name="nome"></td>
 						<td><input type="text" value="${usuario.email}" id="email" name="email"></td>
 						<td><input type="text" value="${usuario.idade}" id="idade" name="idade"></td>
 						<td><input type="text" value="${usuario.estado}" id="estado" name="estado"></td>
 						<td><input type="text" value="${usuario.user}" id="user" name="user"></td>
-						<td><button type="submit" value="${usuario.id}" id="alterar" name="alterar" formaction="${atualizarUsuario}">Atualizar</button></td><tr>
-      			</form>	
-		        </c:forEach>
-			</table>	
+						<td><button type="submit" class="btn btn-primary" value="${usuario.id}" id="alterar" name="alterar" formaction="${atualizarUsuario}">Atualizar</button></td></tr>
+      				
+			</table>
+			</form>	
       	</c:otherwise>
       </c:choose>
       </div>
     </div>
-    
-    
 </body>
 </html>

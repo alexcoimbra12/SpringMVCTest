@@ -8,8 +8,9 @@
 <title>Cadastro Usuario</title>
 
 <link rel='stylesheet' href='webjars/bootstrap/3.3.6/css/bootstrap.min.css'>
-<script type="text/javascript" src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="webjars/jquery/1.11.1/jquery.min.js"></script>
+<script src="webjars/jquery/1.11.1/jquery.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="webjars/bootstrap/3.3.6/js/bootstrap.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="WebContent/js/form-validation.js" charset="UTF-8"></script>
 
 <script type="text/javascript">
 	window.onload = function(){
@@ -39,40 +40,38 @@
 			
 			<form method="POST" id="form"  onsubmit="return verificaForm(this)">
 				<div id="div">
-					Usuário: <br>
+					<label>Usuário:</label> <br>
 					<c:choose>
 						<c:when test="${requestScope.msg == 'Ok'}">
 							<input type="text" name="user" id="user" value="${requestScope.user}" onchange="trocaUser()"> &nbsp
-							<button type="submit" id="verificaUser" style="display: none" name="verificaUser"  formmethod="post" onclick="return verificaCampoUser(this)">
+							<button type="submit" class="btn btn-primary btn-xs" id="verificaUser" style="display: none" name="verificaUser"  formmethod="post" onclick="return verificaCampoUser(this)">
 								Verificar Usuário
 							</button><br>
 							<span id="userDisp" style="display: inline; color: blue">Usuário Dísponivel</span>
 						</c:when>
 						<c:otherwise>
 							<input type="text" name="user" id="user"> &nbsp 
-							<button type="submit" id="verificaUser" name="verificaUser" formmethod="post" onclick="return verificaCampoUser(this)">
+							<button type="submit" class="btn btn-primary btn-xs" id="verificaUser" name="verificaUser" formmethod="post" onclick="return verificaCampoUser(this)">
 								Verificar Usuário
 							</button><br>
 							<span style="color: red">${requestScope.msg}</span>
 						</c:otherwise>
 					</c:choose>
-<!-- 			</form> -->
 				</div>
-<!-- 			<form method="POST" id="form" onsubmit="return verificaForm(this)"> -->
 				<div id="div1" style="display: none">
 					
-					Nome: <br> 
+					<label>Nome:</label> <br> 
 					<input type="text" name="nome" id="nome"> <br>
-					E-mail: <br> 
+					<label>E-mail:</label> <br> 
 					<input type="text" name="email" id="email"> <br> 
-					Idade: <br>
-					<input type="text" name="idade" id="idade"> <br>
-					Senha: <br>
+					<label>Idade:</label> <br>
+					<input type="text" name="idade" id="idade" onchange="validaNumber();" maxlength="2"> <br>
+					<label>Senha:</label> <br>
 					<input type="password" name="password" id="password"> <br>
-					Confirmar Senha: <br>
+					<label>Confirmar Senha:</label> <br>
 					<input type="password" name="password1" id="password1">
 					<br>
-					Selecione um Estado: <br>
+					<label>Selecione um Estado:</label> <br>
 					<select name="estado" id="estado">
 					 	<option value="estado">Selecione o Estado</option> 
 						<option value="ac">Acre</option> 
@@ -108,107 +107,11 @@
 					 <br>
 				
 			
-				<button class="btn btn-primary btn-lg" type="submit" formaction="${cadastraUsuario}">Cadastrar</button>
+				<button class="btn btn-primary" type="submit" formaction="${cadastraUsuario}">Cadastrar</button>
 				</div>
 				</form>
 	</div>			
 		</div>
-			    	
-    	<script type="text/javascript">
-
-    		function verificaForm (form) {
-    			var disp = document.getElementById("userDisp");
-    			if (form.user.value != "" && document.getElementById("userDisp").style.display == "none") {
-    				return true;
-    			} else {
-    			
-    			
-    			if (form.nome.value == "") {
-    				alert("É obrigatório inserir um nome");
-    				document.getElementById("nome").focus();
-    				return false; 
-    				
-    			}if (form.email.value == "") {
-    				alert("É obrigatório inseir um email");
-    				document.getElementById("email").focus();
-    				return false;
-    			
-    			}if (form.idade.value == "") {
-    				alert("É obrigatório inserir a idade");
-    				document.getElementById("idade").focus();
-    				return false;
-    				
-    			}if (form.password.value == "") {
-    				alert("É obrigatório inserir uma senha");
-    				document.getElementById("password").focus();
-    				return false;	
-    				
-    			}if (verificaSenha() == false) {
-    				return false;
-    			 
-    			}if (form.estado.selectedIndex == "") {
-    				alert("É obrigatório selecionar um estado");
-    				document.getElementById("estado").focus();
-    				return false;
-    				
-    			
-    			}if (form.confCadastro.checked == false) {
-    				alert("É obrigatório aceitar os termos antes de continuar");
-    				document.getElementById("confCadastro").focus();
-    				return false;
-    			
-    			}
-    			
-    		return true
-    			}		
-    		}
-    		
-    		function verificaSenha() {
-    			if (document.getElementById("password").value != document.getElementById("password1").value) {
-    				alert("Senhas não são iguais");
-    				document.getElementById("password1").focus();
-    				return false;
-    			}
-    			else {
-    				return true;
-    			}
-    		}
-			
-    		function formDisable() {
-    			document.getElementById("div1").style.display = 'none';
-//     			var form = document.getElementById("form");
-//     			for(i = 0;i<form.length;i++){
-//     			    form[i].disabled=true;
-//     			 }
-
-    		}
-    		
-    		function formEnable() {
-    			document.getElementById("div1").style.display = 'inline';
-//     			var form = document.getElementById("form");
-//     			for(i = 0;i<form.length;i++){
-//     			    form[i].disabled=false;
-//     			 }
-
-    		}
-    		
-    		function trocaUser() {
-     			document.getElementById("verificaUser").style.display = 'inline';
-     			document.getElementById("userDisp").style.display = 'none';
-     			formDisable();
-    		}
-    		
-    		function verificaCampoUser(button){
-    			
-    			if (document.getElementById("user").value == ""){
-    				alert("É obrigatório inserir um usuário")
-    				document.getElementById("user").focus();
-    				formDisable();
-    				return false;
-    			}
-    		}
-
-    	</script>
 		
 </body>
 </html>

@@ -16,7 +16,7 @@ import com.alex.treinamento.spring.model.Usuario;
 @Controller
 public class CadastrarUsuarioController {
 	
-	private String MSG_USER_NOT_VALID = "Usu√°rio n√£o est√° dispon√≠vel, por favor tente outro";
+	private static String MSG_USER_NOT_VALID = "Usu·rio n„o est· disponÌvel, por favor tente outro";
 
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.POST)
 	public ModelAndView cadastraUsuario(HttpServletRequest req,
@@ -91,7 +91,7 @@ public class CadastrarUsuarioController {
 		return listUser;
 	}
 
-	@RequestMapping(value = { "/ListUser" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/remove" }, method = RequestMethod.POST)
 	public List<Usuario> deletarUsuario(HttpServletRequest req,
 			HttpServletResponse resp) {
 
@@ -106,18 +106,19 @@ public class CadastrarUsuarioController {
 	}
 
 	@RequestMapping(value = { "/EditUser" }, method = RequestMethod.GET)
-	public List<Usuario> findUsersToEdit(HttpServletRequest req,
+	public Usuario findUsersToEdit(HttpServletRequest req,
 			HttpServletResponse resp) {
 
 		UsuarioDao usuarioDao = new UsuarioDao();
 
-		List<Usuario> listUser = usuarioDao.findAll();
-
-		return listUser;
+		Integer id = Integer.valueOf(req.getParameter("editar"));
+		Usuario usuario = usuarioDao.getById(id);
+		
+		return usuario;
 	}
 
 	@RequestMapping(value = { "/EditUser" }, method = RequestMethod.POST)
-	public List<Usuario> atualizarUsuario(HttpServletRequest req,
+	public Usuario atualizarUsuario(HttpServletRequest req,
 			HttpServletResponse resp) {
 
 		Integer id = Integer.valueOf(req.getParameter("alterar"));
@@ -137,5 +138,15 @@ public class CadastrarUsuarioController {
 		usuarioDao.merge(usuario);
 
 		return findUsersToEdit(req, resp);
+	}
+	
+	@RequestMapping(value = { "/AllUser" }, method = RequestMethod.GET)
+	public List<Usuario> findAllUser (HttpServletRequest req,
+			HttpServletResponse resp) {
+		
+		UsuarioDao usuarioDao = new UsuarioDao();
+		List<Usuario> listUsers = usuarioDao.findAll();
+		
+		return listUsers;
 	}
 }
